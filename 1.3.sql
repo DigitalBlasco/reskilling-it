@@ -1,5 +1,8 @@
-SELECT * 
-FROM company 
-LEFT JOIN transaction
-	ON company.id = transaction.company_id
-WHERE country ='Germany';
+Select *
+FROM transaction
+WHERE company_id in (
+	SELECT id
+	FROM company 
+	WHERE country ='Germany');
+
+
