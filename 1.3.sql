@@ -16,3 +16,11 @@ WHERE id in (
 	)
 ORDER by company_name;
 
+Select company_name
+FROM company
+WHERE id NOT in ( 
+	Select company_id
+	FROM transaction
+	)
+ORDER by company_name;
+
