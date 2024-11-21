@@ -29,7 +29,7 @@ Select company_name
 FROM company
 WHERE id NOT in ( 
 	Select company_id
-	FROM transaction
+	FROM transactionQuina és la mitjana de vendes per país? Presenta els resultats ordenats de major a menor mitjà.
 	)
 ORDER by company_name;
 
