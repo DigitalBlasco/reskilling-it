@@ -21,6 +21,6 @@ SELECT company.company_name, avg(amount)
 FROM company
 LEFT JOIN transaction
 	ON company.id = transaction.company_id
+	WHERE declined = 0
 GROUP BY company.company_name
-ORDER BY avg(amount) DESC
-LIMIT 1;   
+ORDER BY avg(amount) DESC;   
