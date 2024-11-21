@@ -4,7 +4,6 @@ Select *
 ## EXERCICI 3
 
 # - Mostra totes les transaccions realitzades per empreses d'Alemanya.
-
 FROM transaction
 WHERE company_id in (
 	SELECT id
@@ -12,7 +11,6 @@ WHERE company_id in (
 	WHERE country ='Germany');
 
 #  - Llista les empreses que han realitzat transaccions per un amount superior a la mitjana de totes les transaccions.
-
 Select company_name
 FROM company
 WHERE id in ( 
@@ -29,7 +27,7 @@ Select company_name
 FROM company
 WHERE id NOT in ( 
 	Select company_id
-	FROM transactionQuina és la mitjana de vendes per país? Presenta els resultats ordenats de major a menor mitjà.
+	FROM transaction
 	)
 ORDER by company_name;
 
