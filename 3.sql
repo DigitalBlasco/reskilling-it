@@ -15,4 +15,15 @@ ORDER BY amount DESC;
 
 ## EXERCICI 2
 
+SELECT company.company_name,
+CASE 
+	WHEN COUNT(transaction.id) < 4 THEN "Menys de 4"
+    ELSE "4 o més"
+END AS transaccions
+FROM transaction
+JOIN company
+	ON company.id = transaction.company_id
+GROUP BY company.company_name
+ORDER BY COUNT(transaction.id) DESC;
+
 
