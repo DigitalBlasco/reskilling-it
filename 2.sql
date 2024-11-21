@@ -24,4 +24,17 @@ ORDER BY avg(amount) DESC;
 
 
 ## EXERCICI 3
+# - Transaccions en el mateix país que "Non Institute"
+# - Amb JOIN i subconsultes
 
+Select *
+FROM transaction
+RIGHT JOIN company
+	ON company.id = transaction.company_id
+WHERE country = (
+	SELECT country
+	FROM company
+	WHERE company_name = 'Non Institute');
+    
+# - Transaccions en el mateix país que "Non Institute"
+# - Només amb subconsultes
