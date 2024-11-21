@@ -11,7 +11,15 @@ ORDER BY SUM(amount) DESC
 LIMIT 5;
 
 ## EXERCICI 2
+
 # - Mitjana de vendes per país, de major a menor
+SELECT country as "Pais", avg(amount) as "Mitjana de vendes"
+FROM company
+LEFT JOIN transaction
+	ON company.id = transaction.company_id
+	WHERE declined = 0
+GROUP BY country
+ORDER BY avg(amount) DESC;  
 
 
 
