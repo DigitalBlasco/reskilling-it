@@ -28,7 +28,7 @@ RIGHT JOIN transaction
 	ON company.id = transaction.company_id;
     
 # - Identifica la companyia amb la mitjana més gran de vendes.
-SELECT company.company_name, avg(amount)
+SELECT company.company_name, ROUND(avg(amount),2)
 FROM company
 RIGHT JOIN transaction
 	ON company.id = transaction.company_id
