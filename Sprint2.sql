@@ -28,14 +28,14 @@ RIGHT JOIN transaction
 	ON company.id = transaction.company_id;
     
 # - Identifica la companyia amb la mitjana més gran de vendes.
-SELECT company.company_name, ROUND(avg(amount),2)
+SELECT company.company_name, ROUND(avg(amount),2 ) AS mitjana
 FROM company
 RIGHT JOIN transaction
 	ON company.id = transaction.company_id
 	WHERE declined = 0
 GROUP BY company.company_name
 ORDER BY avg(amount) DESC
-LIMIT 1;   
+LIMIT 1;  
 
 
 ### NIVELL 1 ###
@@ -75,7 +75,7 @@ ORDER by company_name;
 ## EXERCICI 1
 
 # - Cinc dies amb més ingressos per vendes
-SELECT date(timestamp), SUM(amount)
+SELECT date(timestamp) AS data, SUM(amount) AS ingressos
 FROM transaction
 WHERE declined = 0
 GROUP BY date(timestamp)
@@ -86,7 +86,7 @@ LIMIT 5;
 ## EXERCICI 2
 
 # - Mitjana de vendes per país, de major a menor
-SELECT country as "Pais", avg(amount) as "Mitjana de vendes"
+SELECT country as "Pais", ROUND(avg(amount),2) as "Mitjana de vendes"
 FROM company
 LEFT JOIN transaction
 	ON company.id = transaction.company_id
@@ -109,24 +109,17 @@ WHERE country = (
 	WHERE company_name = 'Non Institute');
     
 # - Transaccions en el mateix país que "Non Institute"
-# - Només amb subconsultes
 SELECT *
 FROM transaction
-WHERE company_id in (
+WHERE company_id IN (
 	SELECT id
 	FROM company
-	WHERE id in (
-		SELECT id
+	WHERE country = (
+		SELECT country
 		FROM company
-		WHERE country = (
-			SELECT country
-			FROM company
-			WHERE company_name = 'Non Institute'
-		)
-        
+		WHERE company_name = 'Non Institute')
 	)
-    
-);
+;
 
 
 ### NIVELL 3 ###
@@ -137,8 +130,8 @@ SELECT company.company_name, company.phone, company.country, transaction.timesta
 FROM company
 JOIN transaction
 	ON company.id = transaction.company_id
-WHERE DATE(timestamp) in ('2021-04-29','2021-07-20','2021-03-13')
-	AND amount > 100 AND amount < 200
+WHERE DATE(timestamp) in ('2021-04-29','2021-07-20','2022-03-13')
+	AND amount between 100 and 200
     
 ORDER BY amount DESC;
     
