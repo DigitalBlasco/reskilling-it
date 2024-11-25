@@ -15,15 +15,8 @@ CREATE TABLE IF NOT EXISTS credit_card (
 
 SHOW TABLES;
 
-
-
-
-
-
-
-
-
-
+SELECT *
+FROM credit_card;
 
 
 ### NIVELL 1 ###
