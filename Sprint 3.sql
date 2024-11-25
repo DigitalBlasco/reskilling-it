@@ -22,6 +22,13 @@ FROM credit_card;
 ### NIVELL 1 ###
 ## EXERCICI 2 ##
 
+UPDATE credit_card SET iban = 'R323456312213576817699999' WHERE id = 'CcU-2938';
+
+SELECT *
+from credit_card
+WHERE id = 'CcU-2938';
+
+
 ### NIVELL 1 ###
 ## EXERCICI 3 ##
 
