@@ -64,6 +64,19 @@ WHERE id='02C6201E-D90A-1859-B4EE-88D2986D3B02';
 ### NIVELL 2 ###
 ## EXERCICI 2 ##
 
+# - Crear la vista de màrqueting 
+
+CREATE VIEW VistaMarketing AS
+SELECT company.company_name, company.phone, company.country, avg(amount)
+FROM transaction
+LEFT JOIN company
+	ON company.id = transaction.company_id
+    WHERE declined = 0
+GROUP BY company.id
+ORDER BY avg(amount) DESC;
+
+SELECT *
+FROM vistamarketing;
 
 ### NIVELL 2 ###
 ## EXERCICI 3 ##
