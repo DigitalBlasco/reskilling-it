@@ -65,7 +65,6 @@ WHERE id='02C6201E-D90A-1859-B4EE-88D2986D3B02';
 ## EXERCICI 2 ##
 
 # - Crear la vista de màrqueting 
-
 CREATE VIEW VistaMarketing AS
 SELECT company.company_name, company.phone, company.country, avg(amount)
 FROM transaction
@@ -80,6 +79,12 @@ FROM vistamarketing;
 
 ### NIVELL 2 ###
 ## EXERCICI 3 ##
+
+# - Filtra la vista de màrqueting per a empreses només a alemanya
+SELECT *
+FROM vistamarketing
+WHERE country ='Germany';
+
 
 ### NIVELL 3 ###
 ## EXERCICI 1 ##
