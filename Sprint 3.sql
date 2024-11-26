@@ -40,8 +40,10 @@ VALUES ('108B1D1D-5B23-A76C-55EF-C568E49A99DD', 'CcU-9999', 'b-9999', '9999', '8
 
 SET foreign_key_checks=1;
 
+
 ### NIVELL 1 ###
 ## EXERCICI 4 ##
+
 # - Eliminar la columna "pan" de la taula credit_card
 ALTER TABLE credit_card
 DROP COLUMN pan;
@@ -53,6 +55,11 @@ FROM credit_card;
 ### NIVELL 2 ###
 ## EXERCICI 1 ##
 
+# - Eliminar el registre
+DELETE 
+FROM transaction
+WHERE id='02C6201E-D90A-1859-B4EE-88D2986D3B02';
+
 
 ### NIVELL 2 ###
 ## EXERCICI 2 ##
@@ -61,3 +68,8 @@ FROM credit_card;
 ### NIVELL 2 ###
 ## EXERCICI 3 ##
 
+### NIVELL 3 ###
+## EXERCICI 1 ##
+
+### NIVELL 3 ###
+## EXERCICI 2 ##
