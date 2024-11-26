@@ -42,6 +42,12 @@ SET foreign_key_checks=1;
 
 ### NIVELL 1 ###
 ## EXERCICI 4 ##
+# - Eliminar la columna "pan" de la taula credit_card
+ALTER TABLE credit_card
+DROP COLUMN pan;
+
+SELECT *
+FROM credit_card;
 
 
 ### NIVELL 2 ###
