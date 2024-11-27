@@ -18,6 +18,8 @@ SHOW TABLES;
 SELECT *
 FROM credit_card;
 
+alter table transaction add constraint fk_credit_card_id foreign key (credit_card_id)
+references credit_card (id) on delete cascade on update cascade;
 
 ### NIVELL 1 ###
 ## EXERCICI 2 ##
@@ -88,6 +90,9 @@ WHERE country ='Germany';
 
 ### NIVELL 3 ###
 ## EXERCICI 1 ##
+
+
+
 
 ### NIVELL 3 ###
 ## EXERCICI 2 ##
