@@ -35,13 +35,16 @@ WHERE id = 'CcU-2938';
 ## EXERCICI 3 ##
 
 # - Nou usuari a "transaction" amb les dades que ens han donat
-SET foreign_key_checks=0;
+# - Primer afegim les dependències a les altres taules
+INSERT into company (id) 
+VALUES ('b-9999');
 
+INSERT into credit_card (id) 
+VALUES ('CcU-9999');
+
+# - Ara afegim l'entrada que ens han demanat
 INSERT into transaction (id, credit_card_id, company_id, user_id, lat, longitude, amount, declined) 
 VALUES ('108B1D1D-5B23-A76C-55EF-C568E49A99DD', 'CcU-9999', 'b-9999', '9999', '829.999', '-117.999', '111.11', '0');
-
-SET foreign_key_checks=1;
-
 
 ### NIVELL 1 ###
 ## EXERCICI 4 ##
