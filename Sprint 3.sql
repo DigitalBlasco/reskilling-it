@@ -94,10 +94,25 @@ WHERE country ='Germany';
 ### NIVELL 3 ###
 ## EXERCICI 1 ##
 
--- Eliminem la columna website de company
+-- Canvis a la taula company
 ALTER TABLE company
 DROP COLUMN website;
 
+-- Canvis a la taula credit card
+ALTER TABLE credit_card
+ADD fecha_actual DATE;
+
+ALTER TABLE credit_card
+MODIFY COLUMN id VARCHAR(20);
+
+ALTER TABLE credit_card
+MODIFY COLUMN iban VARCHAR(50);
+
+ALTER TABLE credit_card
+MODIFY COLUMN cvv INT;
+
+ALTER TABLE credit_card
+MODIFY COLUMN expiring_date VARCHAR(20);
 
 -- Indexem la taula transaction
 CREATE INDEX idx_user_id ON transaction(user_id);
