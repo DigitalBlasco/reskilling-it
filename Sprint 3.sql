@@ -429,3 +429,18 @@ references user (id) on delete cascade on update cascade;
 
 ### NIVELL 3 ###
 ## EXERCICI 2 ##
+
+CREATE VIEW InformeTecnico AS
+SELECT transaction.id AS id_transaccio, user.name AS nom_usuari, user.surname AS cognom_usuari, credit_card.iban AS iban, company.company_name AS nom_empresa
+FROM transaction
+JOIN user
+	ON transaction.user_id = user.id
+JOIN credit_card
+	ON transaction.credit_card_id = credit_card.id
+JOIN company
+	ON transaction.company_id = company.id
+ORDER BY transaction.id DESC;
+
+
+
+
