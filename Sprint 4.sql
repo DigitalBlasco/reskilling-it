@@ -1,5 +1,5 @@
 ### NIVELL 1 ###
-## EXERCICI 1 ##
+### PREPARACIÓ BBDD ##
 
 -- Creem una base de dades
 CREATE DATABASE IF NOT EXISTS modelat_sql_roser;
@@ -104,6 +104,21 @@ REFERENCES credit_cards (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE transactions ADD CONSTRAINT fk_business_id foreign key (business_id)
 REFERENCES companies (id) ON DELETE CASCADE ON UPDATE CASCADE; 
+
+
+### NIVELL 1 ###
+## EXERCICI 1 ##
+
+-- I ara responem la pregunta: usuaris amb més de 30 transaccions
+SELECT *
+FROM users
+WHERE id in (SELECT user_id
+	FROM transactions
+	GROUP BY user_id
+	HAVING COUNT(id) > 30
+	ORDER BY COUNT(id) DESC)
+;
+
 
 ### NIVELL 1 ###
 ## EXERCICI 2 ##
