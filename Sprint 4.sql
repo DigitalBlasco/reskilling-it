@@ -123,6 +123,15 @@ WHERE id in (SELECT user_id
 ### NIVELL 1 ###
 ## EXERCICI 2 ##
 
+-- Mitjana d'amount per IBAN de targetes a Donec Ltd
+SELECT credit_cards.iban, AVG(amount) AS mitjana_transaccio_donec
+FROM transactions
+JOIN credit_cards ON credit_cards.id = transactions.card_id
+WHERE business_id = (SELECT id
+	FROM companies
+	WHERE company_name='Donec Ltd')
+GROUP BY credit_cards.iban
+ORDER BY AVG(amount) DESC;
 
 
 ### NIVELL 2 ###
