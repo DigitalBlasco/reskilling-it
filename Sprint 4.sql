@@ -137,6 +137,19 @@ ORDER BY AVG(amount) DESC;
 ### NIVELL 2 ###
 ## EXERCICI 1 ##
 
+CREATE VIEW estat_targetes AS 
+SELECT card_id,
+CASE 
+When estat_en_numero = 3 Then 'Inctiva'
+Else 'Activa'
+end AS Status
+FROM (SELECT card_id, SUM(declined) AS estat_en_numero
+		FROM (SELECT card_id, timestamp, declined, ROW_NUMBER () over (partition by card_id order by timestamp) AS ordre_transaccions
+		FROM transactions) AS taula_ordre_transaccions    
+WHERE ordre_transaccions <=3
+GROUP BY card_id
+ORDER BY card_id ASC) AS taula_estat_en_numero
+;
 
 
 ### NIVELL 3 ###
