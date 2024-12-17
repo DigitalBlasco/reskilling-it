@@ -135,6 +135,7 @@ ORDER BY mitjana_transaccio_donec DESC;
 ### NIVELL 2 ###
 ## EXERCICI 1 ##
 
+-- Vista resultat tres ultimes transaccions
 CREATE VIEW estat_targetes AS 
 SELECT card_id,
 CASE 
@@ -152,7 +153,81 @@ ORDER BY card_id ASC) AS taula_estat_en_numero
 SELECT *
 FROM estat_targetes;
 
+-- Quantes targetes estan actives
 SELECT Status, COUNT(status) as num_targetes
 FROM estat_targetes
 GROUP BY status;
+
+
+### NIVELL 3 ###
+## EXERCICI 1 ##
+
+-- Eliminar espais en blanc producte_id
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE transactions
+SET product_ids = REPLACE (product_ids, ' ', '');
+
+SET SQL_SAFE_UPDATES = 1;
+
+Select *
+From transactions;
+
+-- Carregar la taula productes
+CREATE TABLE IF NOT EXISTS products (
+	id VARCHAR(15) PRIMARY KEY,
+	product_name VARCHAR(15),
+	price VARCHAR(15),
+	colour VARCHAR(15),
+	weight FLOAT,
+	warehouse_id VARCHAR(15)
+);
+
+-- Carregar les dades de la taula productes
+LOAD DATA INFILE 'products.csv' INTO TABLE products
+  FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n'
+  IGNORE 1 LINES;
+  
+
+-- Crear la nova taula pont buscant el id de producte entre els numeros separats per comes 
+CREATE TABLE pont_trans_prod AS
+SELECT transactions.id AS transaccio, products.id AS producte
+FROM products 
+JOIN transactions ON FIND_IN_SET(products.id, transactions.product_ids)
+;
+
+ALTER TABLE pont_trans_prod ADD CONSTRAINT fk_transaccio foreign key (transaccio)
+REFERENCES transactions (id) ON DELETE CASCADE ON UPDATE CASCADE; 
+
+ALTER TABLE pont_trans_prod ADD CONSTRAINT fk_producte foreign key (producte)
+REFERENCES products (id) ON DELETE CASCADE ON UPDATE CASCADE; 
+
+
+-- Vendes per producte
+SELECT products.product_name, COUNT(transaccio) AS numero_vendes
+FROM pont_trans_prod
+JOIN products ON products.id = pont_trans_prod.producte
+JOIN transactions ON transactions.id = pont_trans_prod.transaccio
+WHERE transactions.declined = 0
+GROUP BY products.product_name;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
