@@ -110,3 +110,24 @@ REFERENCES credit_cards (id);
 
 ALTER TABLE transactions ADD CONSTRAINT fk_business_id foreign key (business_id)
 REFERENCES companies (id); 
+
+### NIVELL 1 ###
+## EXERCICI 1 ##
+
+-- Usuaris amb més de 30 transaccions
+SELECT users.id, users.name AS nom, users.surname AS cognom, COUNT(transactions.id) as numero_transaccions
+FROM users
+JOIN transactions ON users.id = transactions.user_id
+GROUP BY user_id
+HAVING numero_transaccions > 30
+ORDER BY numero_transaccions DESC;
+
+-- Mitjana d'amount per IBAN de targetes a Donec Ltd
+SELECT credit_cards.iban, ROUND(AVG(amount)) AS mitjana_transaccio_donec
+FROM transactions
+JOIN credit_cards ON credit_cards.id = transactions.card_id
+WHERE business_id = (SELECT id
+	FROM companies
+	WHERE company_name='Donec Ltd')
+GROUP BY credit_cards.iban
+ORDER BY mitjana_transaccio_donec DESC;
