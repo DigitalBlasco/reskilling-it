@@ -131,3 +131,28 @@ WHERE business_id = (SELECT id
 	WHERE company_name='Donec Ltd')
 GROUP BY credit_cards.iban
 ORDER BY mitjana_transaccio_donec DESC;
+
+### NIVELL 2 ###
+## EXERCICI 1 ##
+
+CREATE VIEW estat_targetes AS 
+SELECT card_id,
+CASE 
+When estat_en_numero = 3 Then 'Inactiva'
+Else 'Activa'
+end AS Status
+FROM (SELECT card_id, SUM(declined) AS estat_en_numero
+		FROM (SELECT card_id, timestamp, declined, ROW_NUMBER () over (partition by card_id order by timestamp) AS ordre_transaccions
+		FROM transactions) AS taula_ordre_transaccions    
+WHERE ordre_transaccions <=3
+GROUP BY card_id
+ORDER BY card_id ASC) AS taula_estat_en_numero
+;
+
+SELECT *
+FROM estat_targetes;
+
+SELECT Status, COUNT(status) as num_targetes
+FROM estat_targetes
+GROUP BY status;
+
