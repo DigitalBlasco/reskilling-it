@@ -155,5 +155,44 @@ ORDER BY card_id ASC) AS taula_estat_en_numero
 ### NIVELL 3 ###
 ## EXERCICI 1 ##
 
+-- Eliminar espais en blanc producte_id
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE transactions
+SET product_ids = REPLACE (product_ids, ' ', '');
+
+SET SQL_SAFE_UPDATES = 1;
+ 
+-- Carregar la taula productes
+CREATE TABLE IF NOT EXISTS products (
+	id VARCHAR(15) PRIMARY KEY
+);
+
+ALTER TABLE products
+ADD product_name VARCHAR(15),
+ADD price VARCHAR(15),
+ADD colour VARCHAR(15),
+ADD weight FLOAT,
+ADD warehouse_id VARCHAR(15);
+
+LOAD DATA INFILE 'products.csv' INTO TABLE products
+  FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n'
+  IGNORE 1 LINES;
+  
+  
+-- Crear la nova taula pont buscant el id de producte entre els numeros separats per comes 
+CREATE TABLE pont_trans_prod AS
+SELECT transactions.id AS transaccio, products.id AS producte
+FROM products 
+JOIN transactions ON FIND_IN_SET(products.id, transactions.product_ids)
+;
+
+ALTER TABLE pont_trans_prod ADD CONSTRAINT fk_transaccio foreign key (transaccio)
+REFERENCES transactions (id) ON DELETE CASCADE ON UPDATE CASCADE; 
+
+ALTER TABLE pont_trans_prod ADD CONSTRAINT fk_producte foreign key (producte)
+REFERENCES products (id) ON DELETE CASCADE ON UPDATE CASCADE; 
+
 
 
