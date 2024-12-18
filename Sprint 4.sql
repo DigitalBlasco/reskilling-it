@@ -159,6 +159,8 @@ FROM estat_targetes
 GROUP BY status;
 
 
+### A PARTIR D'AQUI TINC PROBLEMES DE CÀRREGA DE LA TAULA ###
+### ESTIC ARREGLANT-HO ###
 ### NIVELL 3 ###
 ## EXERCICI 1 ##
 
