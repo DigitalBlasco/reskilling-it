@@ -159,8 +159,6 @@ FROM estat_targetes
 GROUP BY status;
 
 
-### A PARTIR D'AQUI TINC PROBLEMES DE CÀRREGA DE LA TAULA ###
-### ESTIC ARREGLANT-HO ###
 ### NIVELL 3 ###
 ## EXERCICI 1 ##
 
@@ -175,29 +173,31 @@ SET SQL_SAFE_UPDATES = 1;
 Select *
 From transactions;
 
--- Carregar la taula productes
+-- Carregar la taula productes i les dades
 CREATE TABLE IF NOT EXISTS products (
 	id VARCHAR(15) PRIMARY KEY,
-	product_name VARCHAR(15),
+	product_name VARCHAR(50),
 	price VARCHAR(15),
 	colour VARCHAR(15),
 	weight FLOAT,
 	warehouse_id VARCHAR(15)
 );
 
--- Carregar les dades de la taula productes
 LOAD DATA INFILE 'products.csv' INTO TABLE products
   FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n'
+  LINES TERMINATED BY '\n'
   IGNORE 1 LINES;
   
 
 -- Crear la nova taula pont buscant el id de producte entre els numeros separats per comes 
-CREATE TABLE pont_trans_prod AS
+CREATE TABLE IF NOT EXISTS pont_trans_prod AS
 SELECT transactions.id AS transaccio, products.id AS producte
 FROM products 
 JOIN transactions ON FIND_IN_SET(products.id, transactions.product_ids)
-;
+ORDER BY timestamp DESC;
+
+SELECT *
+FROM pont_trans_prod;
 
 ALTER TABLE pont_trans_prod ADD CONSTRAINT fk_transaccio foreign key (transaccio)
 REFERENCES transactions (id) ON DELETE CASCADE ON UPDATE CASCADE; 
@@ -206,14 +206,15 @@ ALTER TABLE pont_trans_prod ADD CONSTRAINT fk_producte foreign key (producte)
 REFERENCES products (id) ON DELETE CASCADE ON UPDATE CASCADE; 
 
 
+
 -- Vendes per producte
 SELECT products.product_name, COUNT(transaccio) AS numero_vendes
 FROM pont_trans_prod
 JOIN products ON products.id = pont_trans_prod.producte
 JOIN transactions ON transactions.id = pont_trans_prod.transaccio
 WHERE transactions.declined = 0
-GROUP BY products.product_name;
-
+GROUP BY products.product_name
+ORDER BY numero_vendes DESC;
 
 
 
