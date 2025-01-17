@@ -12,29 +12,31 @@ SELECT * FROM transactions.company;
 
 ### NIVELL 1 ###
 ## EXERCICI 2
+## Utilitzant JOIN realitzaràs les següents consultes:
 
 # - Llistat dels països que estan fent compres.
-SELECT distinct country
+SELECT distinct company.country
 FROM company
 RIGHT JOIN transaction
 	ON company.id = transaction.company_id
-
+    WHERE declined = 0
 ORDER BY country ASC;
 
 # - Des de quants països es realitzen les compres.
-SELECT count(distinct country)
+SELECT count(distinct company.country)
 FROM company
 RIGHT JOIN transaction
-	ON company.id = transaction.company_id;
+	ON company.id = transaction.company_id
+    WHERE declined = 0;
     
 # - Identifica la companyia amb la mitjana més gran de vendes.
-SELECT company.company_name, ROUND(avg(amount),2 ) AS mitjana
+SELECT company.company_name, ROUND(avg(transaction.amount),2 ) AS mitjana
 FROM company
 RIGHT JOIN transaction
 	ON company.id = transaction.company_id
 	WHERE declined = 0
 GROUP BY company.company_name
-ORDER BY avg(amount) DESC
+ORDER BY mitjana DESC
 LIMIT 1;  
 
 
@@ -64,8 +66,8 @@ ORDER by company_name;
 # - Eliminaran del sistema les empreses que no tenen transaccions registrades, entrega el llistat d'aquestes empreses.
 Select company_name
 FROM company
-WHERE id NOT in ( 
-	Select company_id
+WHERE NOT EXISTS ( 
+	Select *
 	FROM transaction
 	)
 ORDER by company_name;
@@ -78,21 +80,22 @@ ORDER by company_name;
 SELECT date(timestamp) AS data, SUM(amount) AS ingressos
 FROM transaction
 WHERE declined = 0
-GROUP BY date(timestamp)
-ORDER BY SUM(amount) DESC
+GROUP BY data
+ORDER BY ingressos DESC
 LIMIT 5;
 
 ### NIVELL 2 ###
 ## EXERCICI 2
 
 # - Mitjana de vendes per país, de major a menor
-SELECT country as "Pais", ROUND(avg(amount),2) as "Mitjana de vendes"
+SELECT company.country as pais, ROUND(avg(transaction.amount),2) as "mitjana de vendes"
 FROM company
 LEFT JOIN transaction
 	ON company.id = transaction.company_id
 	WHERE declined = 0
-GROUP BY country
-ORDER BY avg(amount) DESC;  
+GROUP BY pais
+ORDER BY "mitjana de vendes" DESC;  
+
 
 ### NIVELL 2 ###
 ## EXERCICI 3
@@ -103,19 +106,21 @@ Select *
 FROM transaction
 RIGHT JOIN company
 	ON company.id = transaction.company_id
-WHERE country = (
-	SELECT country
+WHERE company.country = (
+	SELECT company.country
 	FROM company
 	WHERE company_name = 'Non Institute');
     
 # - Transaccions en el mateix país que "Non Institute"
+# - solament subconsultes
+
 SELECT *
 FROM transaction
 WHERE company_id IN (
 	SELECT id
 	FROM company
-	WHERE country = (
-		SELECT country
+	WHERE company.country = (
+		SELECT company.country
 		FROM company
 		WHERE company_name = 'Non Institute')
 	)
@@ -130,10 +135,10 @@ SELECT company.company_name, company.phone, company.country, transaction.timesta
 FROM company
 JOIN transaction
 	ON company.id = transaction.company_id
-WHERE DATE(timestamp) in ('2021-04-29','2021-07-20','2022-03-13')
-	AND amount between 100 and 200
+WHERE DATE(transaction.timestamp) in ('2021-04-29','2021-07-20','2022-03-13')
+	AND transaction.amount between 100 and 200
     
-ORDER BY amount DESC;
+ORDER BY transaction.amount DESC;
     
 
 ### NIVELL 3 ###
@@ -149,5 +154,5 @@ FROM transaction
 JOIN company
 	ON company.id = transaction.company_id
 GROUP BY company.company_name
-ORDER BY COUNT(transaction.id) DESC;
+ORDER BY transaccions ASC;
     
